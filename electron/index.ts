@@ -2,11 +2,11 @@
 import { join } from 'path';
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent, nativeTheme } from 'electron';
+import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 import isDev from 'electron-is-dev';
 
-const height = 600;
-const width = 800;
+const height = 1200;
+const width = 2400;
 
 function createWindow() {
     // Create the browser window.
@@ -29,6 +29,12 @@ function createWindow() {
     // and load the index.html of the app.
     if (isDev) {
         window?.loadURL(url);
+
+        window.webContents.on('before-input-event', (_, input) => {
+            if (input.type === 'keyDown' && input.key === 'F12') {
+                window.webContents.toggleDevTools();
+            }
+        });
     } else {
         window?.loadFile(url);
     }
@@ -49,8 +55,6 @@ function createWindow() {
     ipcMain.on('close', () => {
         window.close();
     });
-
-    nativeTheme.themeSource = 'dark';
 }
 
 // This method will be called when Electron has finished
