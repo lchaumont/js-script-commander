@@ -1,7 +1,9 @@
+import { Play } from 'lucide-react';
 import { editor } from 'monaco-editor';
 import React, { useEffect, useRef } from 'react';
 import AppBar from './AppBar';
 import Editor from './components/Editor';
+import { Button } from './components/button';
 
 function App() {
     const editor1Ref = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -64,6 +66,10 @@ function App() {
             )}
 
             <main className="h-full p-4 space-y-4">
+                <Button onClick={executeCode} size="icon" className='bg-green-400'>
+                    <Play className="h-4 w-4" color='black' />
+                </Button>
+
                 <div className="mx-auto h-[95%] flex flex-row justify-between [&>div]:flex-1 space-x-4">
                     <div className="border-2">
                         <Editor ref={editor1Ref} language="json" />

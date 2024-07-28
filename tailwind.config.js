@@ -1,22 +1,32 @@
 /** @type {import('tailwindcss').Config} */
-import withMT from '@material-tailwind/react/utils/withMT';
-
-export default withMT({
-    content: ['./src/index.html', './src/**/*.{js,ts,jsx,tsx}'],
-    darkMode: 'class',
+module.exports = {
+    darkMode: ['class'],
+    content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+    prefix: '',
     theme: {
+        container: {
+            center: true,
+            padding: '2rem',
+            screens: {
+                '2xl': '1400px'
+            }
+        },
         extend: {
-            colors: {
-                'slate-800': 'rgb(30 41 59)',
-                'slate-900': 'rgb(15 23 42)'
+            keyframes: {
+                'accordion-down': {
+                    from: { height: '0' },
+                    to: { height: 'var(--radix-accordion-content-height)' }
+                },
+                'accordion-up': {
+                    from: { height: 'var(--radix-accordion-content-height)' },
+                    to: { height: '0' }
+                }
+            },
+            animation: {
+                'accordion-down': 'accordion-down 0.2s ease-out',
+                'accordion-up': 'accordion-up 0.2s ease-out'
             }
         }
     },
-    variants: {
-        extend: {},
-        fontFamily: {
-            sans: ['Inter', 'ui-sans-serif', 'system-ui']
-        }
-    },
-    plugins: []
-});
+    plugins: [require('tailwindcss-animate')]
+};

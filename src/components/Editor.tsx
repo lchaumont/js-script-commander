@@ -11,7 +11,6 @@ const Editor = forwardRef(function Editor(
     { language, defaultValue }: EditorProps,
     ref: React.ForwardedRef<editor.IStandaloneCodeEditor | null | undefined>
 ) {
-
     const handleEditorDidMount = (monacoEditor: editor.IStandaloneCodeEditor) => {
         if (ref && monacoEditor) {
             ref.current = monacoEditor;
