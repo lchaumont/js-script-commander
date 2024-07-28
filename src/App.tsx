@@ -1,14 +1,18 @@
 import { Play } from 'lucide-react';
 import { editor } from 'monaco-editor';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppBar from './AppBar';
 import Editor from './components/Editor';
 import { Button } from './components/button';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './components/select';
 
 function App() {
     const editor1Ref = useRef<editor.IStandaloneCodeEditor | null>(null);
     const editor2Ref = useRef<editor.IStandaloneCodeEditor | null>(null);
     const editor3Ref = useRef<editor.IStandaloneCodeEditor | null>(null);
+
+    const [editor1Format, setEditor1Format] = useState<'json' | 'csv'>('json');
+    const handleChangeEditor1Format = (value: string) => setEditor1Format(value as 'json' | 'csv');
 
     useEffect(() => {
         window.Main.removeLoading();
@@ -25,9 +29,12 @@ function App() {
             editor3Content.start = start;
 
             try {
-                const jsonData = JSON.parse(jsonContent);
+                const input =
+                    editor1Format === 'json'
+                        ? JSON.parse(jsonContent)
+                        : jsonContent.split('\n').map((line) => line.trim().split(';'));
 
-                const result = new Function('data', jsCode)(jsonData);
+                const result = new Function('data', jsCode)(input);
 
                 const end = new Date().getTime();
                 editor3Content.end = end;
@@ -66,13 +73,25 @@ function App() {
             )}
 
             <main className="h-full p-4 space-y-4">
-                <Button onClick={executeCode} size="icon" className='bg-green-400'>
-                    <Play className="h-4 w-4" color='black' />
+                <Button onClick={executeCode} size="icon">
+                    <Play className="h-4 w-4" />
                 </Button>
 
                 <div className="mx-auto h-[95%] flex flex-row justify-between [&>div]:flex-1 space-x-4">
                     <div className="border-2">
-                        <Editor ref={editor1Ref} language="json" />
+                        <Select onValueChange={handleChangeEditor1Format} defaultValue={editor1Format}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Select a fruit" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="json">JSON</SelectItem>
+                                    <SelectItem value="csv">CSV</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
+                        <Editor ref={editor1Ref} language={editor1Format} />
                     </div>
                     <div className="border-2">
                         <Editor ref={editor2Ref} language="javascript" />
