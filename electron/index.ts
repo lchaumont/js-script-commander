@@ -38,8 +38,12 @@ function createWindow() {
     } else {
         window?.loadFile(url);
     }
-    // Open the DevTools.
-    // window.webContents.openDevTools();
+
+    window.webContents.on('before-input-event', (_, input) => {
+        if (input.type === 'keyDown' && input.key === 'F5') {
+            window.webContents.reloadIgnoringCache();
+        }
+    });
 
     // For AppBar
     ipcMain.on('minimize', () => {

@@ -22,7 +22,12 @@
     "plugins": ["react", "@typescript-eslint", "prettier"],
     "rules": {
         // Prettier
-        "prettier/prettier": "warn",
+        "prettier/prettier": [
+            "warn",
+            {
+                "endOfLine": "auto"
+            }
+        ],
 
         // Typescript
         "no-use-before-define": "off",
@@ -36,6 +41,8 @@
         "react/button-has-type": 0,
         "react/no-children-prop": 0,
         "react/jsx-props-no-spreading": 0,
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-uses-react": "off",
         "react/function-component-definition": [
             "warn",
             {
@@ -50,7 +57,8 @@
             }
         ],
         // Import
-        "import/extensions": 0
+        "import/extensions": 0,
+        "no-new-func": "off"
     },
     "settings": {
         "import/resolver": {

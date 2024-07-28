@@ -4,6 +4,7 @@ import { rmSync } from 'node:fs';
 import { join } from 'path';
 import electron from 'vite-plugin-electron';
 import renderer from 'vite-plugin-electron-renderer';
+import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 import pkg from './package.json';
 
 const root = join(__dirname);
@@ -45,8 +46,10 @@ function plugins(isDev: boolean) {
                 }
             }
         ]),
-
-        renderer()
+        renderer(),
+        monacoEditorPlugin({
+            languageWorkers: ['editorWorkerService', 'typescript']
+        })
     ];
 }
 
