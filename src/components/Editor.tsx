@@ -1,9 +1,14 @@
 import { Editor as MonacoEditor } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
 import React, { forwardRef, useEffect } from 'react';
+import { InputType } from '../lib/parsers';
+
+export enum MiddleEditorLanguage {
+    JS = 'javascript',
+}
 
 type EditorProps = {
-    language: 'javascript' | 'json' | 'csv';
+    language: InputType | MiddleEditorLanguage;
     defaultValue?: string;
 };
 
@@ -24,15 +29,14 @@ const Editor = forwardRef(function Editor(
     useEffect(() => {
         if (ref) {
             if (typeof ref !== 'function' && ref.current) {
-                editor.setModelLanguage(ref.current.getModel()!, language);
+                editor.setModelLanguage(ref.current.getModel()!, language.toLocaleLowerCase());
             }
         }
     }, [language]);
 
     return (
         <MonacoEditor
-            height="100%"
-            defaultLanguage={language}
+            defaultLanguage={language.toLocaleLowerCase()}
             defaultValue={defaultValue}
             theme="dark-modern"
             onMount={handleEditorDidMount}
